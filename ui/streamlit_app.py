@@ -25,7 +25,7 @@ def init_trial_config():
 
 def increment_counter():
     if 'count' not in st.session_state:
-	    st.session_state.count = 0
+        st.session_state.count = 0
     st.session_state.count += 1
 
 def check_free_quota():
@@ -125,6 +125,7 @@ with st.container():
             await user_proxy.a_initiate_chat(
                 assistant,
                 message=user_input,
+                max_turns=20
             )
 
           # Run the asynchronous function within the event loop
