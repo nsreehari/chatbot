@@ -51,9 +51,15 @@ def get_current_config():
 
     return {"valid" : False, "error": "Invalid Configuration Keys Selection"}
 
-
-st.html('<font color="#bbbbbb"><b style="color:black;">GenX </b><b style="color:black;"></b><b style="color:black;">Playground</b></font>')
-st.write("""# AutoGen Chat Agents""")
+st.markdown("""
+        <style>
+               .block-container {
+                    padding-top: 2rem;   
+                }
+        </style>
+        """, unsafe_allow_html=True)
+st.header('GenX Playground')
+st.write("#### AutoGen Chat Agents")
 
 class TrackableAssistantAgent(AssistantAgent):
     def _process_received_message(self, message, sender, silent):
@@ -81,9 +87,9 @@ st.session_state.custom_config = {
 with st.sidebar:
     st.header("Azure OpenAI Configuration")
     st.session_state.key_type = st.radio("",  options=[TRIAL, CUSTOM], index=0)
-    st.session_state.custom_config["base_url"] = st.text_input("Azure Endpoint", placeholder="https://<custom>.openai.azure.com")
-    st.session_state.custom_config["api_key"] = st.text_input("API Key", type="password", placeholder="enter custom key")
-    st.session_state.custom_config["model"] = st.text_input("Deployment Model", placeholder="name of the deployment to use")
+    st.session_state.custom_config["base_url"] = st.text_input("Azure Endpoint", disabled=st.session_state.key_type==TRIAL, placeholder="https://<custom>.openai.azure.com")
+    st.session_state.custom_config["api_key"] = st.text_input("API Key", type="password",disabled=st.session_state.key_type==TRIAL, placeholder="enter custom key")
+    st.session_state.custom_config["model"] = st.text_input("Deployment Model",disabled=st.session_state.key_type==TRIAL, placeholder="name of the deployment to use")
 
 with st.container():
     # for message in st.session_state["messages"]:
@@ -92,13 +98,12 @@ with st.container():
     if c["valid"] == False:
             st.warning(c["error"], icon="⚠️")
             st.stop()
-    if "info" in c and c["info"]:
-        st.info(c["info"])
 
     user_input = st.chat_input("Give some goal for the agent ...")
 
     if user_input:  
-
+        if "info" in c and c["info"]:
+            st.info(c["info"], icon="ℹ️")
         increment_counter()
         try:
           llm_config = {
