@@ -2,8 +2,8 @@ import streamlit as st
 import asyncio
 from autogen import AssistantAgent, UserProxyAgent
 from os import getenv
-from dotenv import load_dotenv, find_dotenv                                                                                                                                 
-load_dotenv(find_dotenv())
+# from dotenv import load_dotenv, find_dotenv                                                                                                                                 
+# load_dotenv(find_dotenv())
 
 TRIAL="use trial keys"
 CUSTOM="use custom keys"
